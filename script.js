@@ -56,7 +56,7 @@ const addItemToCart = async (product) => {
     button.addEventListener('click', (event) => {
       const itemSku = getSkuFromProductItem(event.target.parentElement);
       const eachItem = {
-        sku: itemSku,
+        sku: getSkuFromProductItem(event.target.parentElement),
         name: productList.find(({ id }) => id === itemSku).title,
         salePrice: productList.find(({ id }) => id === itemSku).price,
       };
