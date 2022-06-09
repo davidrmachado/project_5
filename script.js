@@ -26,13 +26,27 @@ const createProductItemElement = ({ sku, name, image }) => {
 
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
+let totalValue = 0;
+const total = document.querySelector('.total-price');
+
+const cartIncrement = (item) => {
+  totalValue += item.salePrice;
+  total.innerText = `${totalValue}`;
+};
+const cartDecrement = (value) => {
+  totalValue = Math.round(totalValue * 100 - value * 100) / 100;
+  total.innerText = `${totalValue}`;
+};
+
 const cartItemClickListener = (event) => {
   event.target.remove();
+  cartDecrement(event.target.id);
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
+  li.id = `${salePrice}`;
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
@@ -62,6 +76,7 @@ const addItemToCart = async (product) => {
       };
       const cartList = document.querySelector('ol');
       cartList.appendChild(createCartItemElement(eachItem));
+      cartIncrement(eachItem);
     });
   });
 };
